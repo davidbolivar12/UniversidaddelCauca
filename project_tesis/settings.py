@@ -145,9 +145,9 @@ LOGOUT_REDIRECT_URL = '/inicio_sesion/'
 
 # Configuración de Envío de Correos (Gmail)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'pruebaalertaproyectogrado@gmail.com'
-EMAIL_HOST_PASSWORD = 'nrpf mfye iuma iedu'  # contraseña de aplicación
-DEFAULT_FROM_EMAIL = 'Sistema de Proyectos <pruebaalertaproyectogrado@gmail.com>'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''  # contraseña de aplicación
+DEFAULT_FROM_EMAIL = 'Sistema de Proyectos < >'

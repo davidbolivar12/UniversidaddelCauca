@@ -26,3 +26,5 @@ Thumbs.db
 # Tu script de utilidad (opcional, si no quieres que otros lo vean)
 generar_tree.py
 get-pip.py
+
+.env
