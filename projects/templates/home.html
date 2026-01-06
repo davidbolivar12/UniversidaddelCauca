@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Listado de Proyectos - Universidad del Cauca</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+  <link rel="icon" href="../../media/Logo-Universidad-del-Cauca-vertical-1.png">
+  <link rel="stylesheet" href="{% static 'home.css' %}">
+
+  <style>
+    .card {
+      border-radius: 0.8rem;
+    }
+
+    .title-cell {
+      word-wrap: break-word;
+    }
+
+    .text-muted-custom {
+      color: #6c757d;
+    }
+
+    /* ===== ESTADOS DE PROYECTO ===== */
+
+    .estado-select {
+      text-align: center;
+      font-weight: 600;
+      border-radius: 30px;
+      padding: 8px 2px;
+      width: 60%;
+      margin: 20%;
+      cursor: pointer;
+    }
+
+    /* ACTIVO */
+    .estado-activo {
+      background-color: #22b92a;
+      color: #ffffff;
+      border: 1px solid #badbcc;
+      width: 100%;
+      margin: 10px;
+      padding: 10px;
+    }
+
+    .estado-activo:hover {
+      background-color: #1b9221;
+    }
+
+    /* FINALIZADO */
+    .estado-finalizado {
+      background-color: #e2e3e5;
+      color: #41464b;
+      border: 1px solid #d3d6d8;
+      width: 100%;
+      margin: 10px;
+      padding: 10px;
+    }
+
+    .estado-finalizado:hover {
+      background-color: #bcbdbe;
+    }
+
+    /* INACTIVO */
+    .estado-inactivo {
+      background-color: #db0e1f;
+      color: #ffffff;
+      border: 1px solid #f5c2c7;
+      width: 100%;
+      margin: 10px;
+      padding: 10px;
+    }
+
+    .estado-inactivo:hover {
+      background-color: #a80b19;
+    }
+
+
+    table.dataTable td,
+    table.dataTable th {
+      vertical-align: middle !important;
+      text-align: center;
+    }
+
+    #datatable td:nth-child(3),
+    #datatable td:nth-child(5),
+    #datatable td:nth-child(6) {
+      text-align: left;
+    }
+
+    .estado-select:disabled {
+      opacity: 1 !important;         
+      cursor: default !important;    
+      pointer-events: none;          
+      border: 1px solid transparent;
+      color: black;
+      background-color: #22b92a7a;
+      box-shadow: none !important; 
+      -webkit-appearance: none;
+      appearance: none;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="hidden" id="csrf_token_global" value="{{ csrf_token }}">
+  <header style="display: flex; align-items: center; padding: 0; justify-content: space-between; height: 150px;">
+    
+    <div style="display: flex; align-items: center; padding: 0; gap: 10%; width: 90%;">
+      <div>
+        <img style="height: 150px; color: white;" src="../../media/Logo-Universidad-del-Cauca-e1715273370946.png" alt="">
+      </div>
+      <div class="text-center" style="background:#ffffff00; color:#fff;">
+        <h1 class="mb-0">Facultad de Ingenieria Civil</h1>
+        <small>Trabajos de Grado</small>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg" style="background:#000066;">
+      <div class="container-fluid">
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMenu">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                Opciones
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'estudiantes' %}">Listado de estudiantes</a></li>
+                <li><a class="dropdown-item" href="{% url 'docentes' %}">Listado de profesores</a></li>
+                
+                {% if user.is_superuser %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-primary" href="{% url 'gestionar_usuarios' %}">Gestionar Usuarios</a></li>
+                {% endif %}
+
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Cerrar sesión</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container-xl mb-5">
+    <div class="card shadow-lg">
+      <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="mb-0">Listado de Proyectos</h2>
+          
+          {% if user.is_staff or user.is_superuser %}
+          <button class="btn btn-primary" onclick="abrirModalAgregar()">Agregar</button>
+          {% endif %}
+        </div>
+
+        <div class="table-responsive">
+          <table id="datatable" class="table table-striped table-bordered nowrap" style="width:100%">
+            <thead class="table-danger text-white">
+              <tr>
+                <th>No</th>
+                <th>Fecha Inicio</th>
+                <th>Estudiantes</th>
+                <th>Modalidad</th>
+                <th>Título</th>
+                <th>Director</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for project in proyectos %}
+              <tr data-id="{{ project.id }}" data-start="{{ project.start_date|date:'d/m/Y' }}"
+                data-expiry="{{ project.expiry_date|date:'d/m/Y' }}" data-sesion="{{ project.sesion|default:'' }}"
+                data-resolucion="{{ project.resolucion|default:'' }}"
+                data-modalidad="{{ project.get_modalidad_display|escape }}"
+                data-department="{{ project.department|escape }}"
+                data-director="{% if project.director %}{{ project.director.nombre|escape }}{% endif %}"
+                data-codirector="{% if project.codirector %}{{ project.codirector.nombre|escape }}{% endif %}"
+                data-status="{{ project.status|escape }}" data-title="{{ project.title|escape }}"
+                data-students-names="{% for ps in project.students.all %}{{ ps.estudiante.nombre_completo|escape }}{% if not forloop.last %}&lt;br&gt;{% endif %}{% empty %}Sin estudiantes{% endfor %}"
+                data-students-legajos="{% for ps in project.students.all %}{{ ps.estudiante.legajo|escape }}{% if not forloop.last %}&lt;br&gt;{% endif %}{% empty %}—{% endfor %}"
+                data-notes="{% if project.notes %}{{ project.notes|escape }}{% else %}__SIN_OBSERVACIONES__{% endif %}">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ project.start_date|date:"d/m/Y" }}</td>
+                <td>
+                  {% for ps in project.students.all %}
+                  {{ ps.estudiante.nombre_completo }}{% if not forloop.last %}; {% endif %}
+                  {% empty %}
+                  Sin estudiantes
+                  {% endfor %}
+                </td>
+                <td>{{ project.get_modalidad_display }}</td>
+                <td class="title-cell">{{ project.title }}</td>
+                <td>{% if project.director %}{{ project.director.nombre }}{% else %}Sin director{% endif %}</td>
+                <td style="width: 12%; padding-right: 2%;" class="text-center">
+                  <select class="form-select form-select-sm estado-select" data-project-id="{{ project.id }}"
+                    data-original="{{ project.status }}"
+                    {% if not user.is_staff and not user.is_superuser %}disabled{% endif %}>
+                    
+                    {% for key,label in project.STATUS_CHOICES %}
+                    <option value="{{ key }}" {% if project.status == key %} selected{% endif %}>
+                      {{ label|upper }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <div class="d-flex justify-content-center gap-1">
+                    <button class="btn btn-sm btn-primary btn-detalle">Detalles</button>
+                    
+                    {% if user.is_staff or user.is_superuser %}
+                    <button class="btn btn-warning btn-sm"onclick="abrirModalModificar({{ project.id }})">
+                      Modificar
+                    </button>
+
+                    <a class="btn btn-sm btn-danger" href="{% url 'eliminar_proyecto' project.id %}"
+                      onclick="return confirm('¿Eliminar proyecto?');">
+                      Eliminar
+                    </a>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="detalleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background:#b11217; color:#fff;">
+          <h5 class="modal-title" id="detalleModalTitle">
+            Detalles del Proyecto
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row gy-2">
+            <div class="col-md-6"><strong>Fecha Inicio:</strong> <span id="d-start">—</span></div>
+            <div class="col-md-6"><strong>Fecha Expiración:</strong> <span id="d-expiry">—</span></div>
+
+            <div class="col-md-6"><strong>Sesión:</strong> <span id="d-sesion">—</span></div>
+            <div class="col-md-6"><strong>Resolución:</strong> <span id="d-resolucion">—</span></div>
+
+            <div class="col-md-6"><strong>Modalidad:</strong> <span id="d-modalidad">—</span></div>
+            <div class="col-md-6"><strong>Departamento:</strong> <span id="d-department">—</span></div>
+
+            <div class="col-md-6"><strong>Director:</strong> <span id="d-director">—</span></div>
+            <div class="col-md-6"><strong>Codirector:</strong> <span id="d-codirector">—</span></div>
+
+            <div class="col-12"><strong>Status:</strong> <span id="d-status">—</span></div>
+
+            <div class="col-md-6">
+              <strong>Estudiantes:</strong>
+              <div id="d-students-names" class="mt-1"></div>
+            </div>
+
+            <div class="col-md-6">
+              <strong>Codigo:</strong>
+              <div id="d-students-legajos" class="mt-1"></div>
+            </div>
+
+            <div class="col-12">
+              <strong>Título:</strong>
+              <div id="d-title" class="mt-1"></div>
+            </div>
+
+            <div class="col-12">
+              <strong>Observaciones:</strong>
+              <div id="d-notes" class="mt-1 text-muted-custom"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmarEstadoModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background:#000066; color:#fff;">
+          <h5 class="modal-title">Confirmar cambio de estado</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <p id="confirmarEstadoTexto" class="mb-0"></p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelarCambioEstado">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" id="confirmarCambioEstado">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalModificarProyecto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content" id="modalModificarContenido">
+        </div>
+    </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+  <script src="../static/js/proyects.js"></script>
+
+</body>
+
+</html>

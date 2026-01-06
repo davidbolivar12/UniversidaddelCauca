@@ -1,0 +1,130 @@
+    Paleta de colores .color1 {
+      color: #0d6efd;
+    }
+
+    .color2 {
+      color: #a81f17;
+    }
+
+    .color3 {
+      color: #a81f17;
+    }
+
+    .color4 {
+      color: #87b4d8;
+    }
+
+    .color5 {
+      color: #000066;
+    }
+
+    body {
+      background-color: #f8f9fa;
+    }
+
+    header {
+      background-color: #000066;
+      height: 100px;
+      color: white;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    .estado-select {
+      background-image: none !important;
+    }
+
+    .estado-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+
+    .container-xl {
+      margin-top: 2rem;
+      max-width: 95%;
+    }
+
+    .card-title {
+      color: #a81f17;
+      /* color2 */
+      font-weight: bold;
+    }
+
+    table.dataTable th {
+      background-color: #a81f17 !important;
+      /* color3 */
+      color: white;
+      text-align: center;
+    }
+
+    table.dataTable td {
+      white-space: normal !important;
+      word-wrap: break-word;
+      vertical-align: top;
+    }
+
+    table.dataTable tbody tr:hover {
+      background-color: #ffe7c7 !important;
+      /* suave de color4 */
+    }
+
+    /* Botones personalizados */
+    .btn-ver {
+      background-color: #87b4d8;
+      /* color4 */
+      color: white;
+    }
+
+    .btn-ver:hover {
+      background-color: #a7d0f1;
+      color: white;
+    }
+
+    .btn-modificar {
+      background-color: #0d6efd;
+      /* color5 */
+      color: #0d6efd;
+    }
+
+    .btn-modificar:hover {
+      background-color: #186fe0;
+      color: white;
+    }
+
+    .btn-eliminar {
+      background-color: #dc3545;
+      /* color2 */
+      color: white;
+    }
+
+    .navbar-st:hover {
+      background-color: #104fa1;
+      color: #ffffff;
+    }
+
+    .navbar-st {
+      border-radius: 1px;
+    }
+
+    .btn-eliminar:hover {
+      background-color: #bd2d3c;
+      color: white;
+    }
+
+    /* Modal encabezado */
+    .modal-header {
+      background-color: #000066;
+      /* color1 */
+      color: white;
+    }
+
+    .btn-close-white {
+      filter: invert(1);
+    }
+
+    #contenedorPrincipal {
+      width: 90%;
+      background-color: black !important;
+    }

@@ -1,0 +1,71 @@
+    :root {
+        --color1: #000066;
+        --color2: #a81f17;
+        --color3: #a81f17;
+        --color4: #87b4d8;
+        --color5: #000066;
+
+        --card-radius: 18px;
+        --glass-bg: rgba(255, 255, 255, 0.06);
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--color1) 0%, var(--color4) 60%);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    .signup-container {
+      max-width: 450px;
+      margin: 5% auto;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-title {
+      color: var(--color1);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-signup {
+      color: white;
+      background: linear-gradient(90deg, var(--color2), var(--color1));
+      border: none;
+      border-radius: 10px;
+      padding: 0.6rem 1rem;
+      box-shadow: 0 8px 20px rgba(161, 200, 251, 0.18);
+    }
+
+    .btn-signup:hover {
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .form-control:focus {
+      border-color: var(--color1);
+      box-shadow: 0 0 0 0.2rem rgba(12, 65, 133, 0.25);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .login-link a {
+      color: var(--color1);
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }

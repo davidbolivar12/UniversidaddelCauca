@@ -1,0 +1,102 @@
+     :root {
+         --color1: #000066;
+         --color2: #a81f17;
+         --color3: #a81f17;
+         --color4: #87b4d8;
+         --color5: #000066;
+
+         --card-radius: 18px;
+         --glass-bg: rgba(255, 255, 255, 0.06);
+     }
+
+     html,
+     body {
+         height: 100%;
+     }
+
+     body {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background: linear-gradient(135deg, var(--color1) 0%, var(--color4) 60%);
+         font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+     }
+
+     .login-card {
+         width: 100%;
+         max-width: 420px;
+         border-radius: var(--card-radius);
+         overflow: hidden;
+         box-shadow: 0 10px 30px rgba(12, 65, 133, 0.25);
+         background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+     }
+
+     .login-side {
+         padding: 2.25rem 1.5rem;
+     }
+
+     .brand {
+         display: flex;
+         gap: 0.75rem;
+         align-items: center;
+         margin-bottom: 1rem;
+     }
+
+     .brand .logo {
+         width: 56px;
+         height: 56px;
+         border-radius: 12px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-weight: 700;
+         color: white;
+         background: white;
+         box-shadow: 0 6px 18px var(--color4);
+     }
+
+     .brand h4 {
+         margin: 0;
+         color: var(--color1);
+     }
+
+     .brand p {
+         margin: 0;
+         color: rgba(0, 0, 0, 0.6);
+         font-size: 0.9rem
+     }
+
+     .form-control:focus {
+         border-color: var(--color1);
+         box-shadow: 0 0 0 .15rem rgba(12, 65, 133, 0.15);
+     }
+
+     .btn-primary-custom {
+         background: linear-gradient(90deg, var(--color2), var(--color1));
+         border: none;
+         border-radius: 10px;
+         padding: 0.6rem 1rem;
+         box-shadow: 0 8px 20px rgba(12, 65, 133, 0.18);
+     }
+
+     .btn-primary-custom:hover {
+         transform: translateY(-1px);
+     }
+
+     .divider {
+         height: 1px;
+         background: linear-gradient(90deg, rgba(12, 65, 133, 0.08), rgba(168, 31, 23, 0.04));
+         margin: 1.25rem 0;
+     }
+
+     .social-btn {
+         border-radius: 10px;
+         padding: .45rem .75rem;
+         width: 100%;
+     }
+
+     @media (max-width:575px) {
+         .login-card {
+             margin: 1.5rem;
+         }
+     }

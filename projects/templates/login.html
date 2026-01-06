@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/login.css">
+    <link rel="icon" href="../../media/Logo-Universidad-del-Cauca-vertical-1.png">
+</head>
+
+<body>
+
+    <main class="login-card">
+        <div class="login-side">
+            <div class="brand">
+                <div class="logo"><img src="/media/Logo-Universidad-del-Cauca-vertical-1.png" alt="" width="90%"></div>
+                <div>
+                    <h4>Universidad del Cauca</h4>
+                    <p>Tesis, pasantias e investigaciones</p>
+                </div>
+            </div>
+            
+            <form id="loginForm" class="mt-2" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="text" class="form-label">Usuario</label>
+                    <input name="username" type="text" class="form-control" id="username" placeholder="Nombre de usuario" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="Contraseña" required name="password">
+                        <button class="btn btn-outline-secondary" type="button" id="togglePwd">Mostrar</button>
+                    </div>
+                </div>
+                <a style="margin: 5px;" href="{% url 'signup' %}">¿No tienes una cuenta?</a>
+
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-primary-custom">Iniciar sesión</button>
+                </div>
+
+            </form>
+
+        </div>
+        {% if message %}
+        <div class="alert alert-{{ message_type }} mb-2" role="alert"
+            style="width: 50%; margin: auto; text-align: center;">
+            {{ message }}
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle password visibility
+        const toggleBtn = document.getElementById('togglePwd');
+        const pwdInput = document.getElementById('password');
+        toggleBtn.addEventListener('click', () => {
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                toggleBtn.textContent = 'Ocultar';
+            } else {
+                pwdInput.type = 'password';
+                toggleBtn.textContent = 'Mostrar';
+            }
+        });
+
+    </script>
+</body>
+
+</html>

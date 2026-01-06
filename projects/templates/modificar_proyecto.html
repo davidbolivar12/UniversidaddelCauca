@@ -1,0 +1,131 @@
+<div class="modal-header">
+  <h5 class="modal-title">Modificar Proyecto No. {{ proyecto.id }}</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+  <form method="post" id="formModificarProyecto" action="{% url 'modificar_proyecto' proyecto.id %}">
+    {% csrf_token %}
+
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Fecha Inicio</label>
+        <input type="date" name="start_date" class="form-control"
+               value="{{ proyecto.start_date|date:'Y-m-d' }}" required>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Fecha Expiración</label>
+        <input type="date" name="expiry_date" class="form-control"
+               value="{{ proyecto.expiry_date|date:'Y-m-d' }}">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Sesión</label>
+        <input type="number" name="sesion" class="form-control" value="{{ proyecto.sesion }}">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Resolución</label>
+        <input type="number" name="resolucion" class="form-control" value="{{ proyecto.resolucion }}">
+      </div>
+
+      <div class="col-md-8">
+        <label class="form-label">Modalidad</label>
+        <select name="modalidad" id="mod_modalidad" class="form-select">
+          {% for code, label in modalidad_choices %}
+            <option value="{{ code }}" {% if proyecto.modalidad == code %}selected{% endif %}>
+                {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Título</label>
+        <input type="text" name="title" class="form-control" value="{{ proyecto.title }}">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Departamento</label>
+        <select name="department" id="mod_departamento" class="form-select">
+           <option value="{{ proyecto.department }}" selected>{{ proyecto.department }}</option>
+           {% for code, name in department_choices %}
+              {% if code != proyecto.department %}
+                <option value="{{ code }}">{{ name }}</option>
+              {% endif %}
+           {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Director</label>
+        <select name="director_id" id="mod_director" class="form-select" 
+                data-selected="{{ proyecto.director.id|default:'' }}">
+          <option value="">-- Sin director --</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Codirector</label>
+        <select name="codirector_id" id="mod_codirector" class="form-select"
+                data-selected="{{ proyecto.codirector.id|default:'' }}">
+          <option value="">-- Sin codirector --</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Estado</label>
+        <select name="status" class="form-select">
+          {% for key,label in status_choices %}
+            <option value="{{ key }}" {% if proyecto.status == key %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-bold">Estudiantes</label>
+        
+        <div class="position-relative">
+            <input type="text" id="mod_buscador_estudiantes" class="form-control" placeholder="Buscar para agregar..." autocomplete="off">
+            <div id="mod_lista_resultados" class="list-group position-absolute w-100 shadow" style="z-index: 1000; max-height: 200px; overflow-y: auto; display: none;"></div>
+        </div>
+
+        <div id="mod_contenedor_seleccionados" class="mt-2 d-flex flex-wrap gap-2">
+            <span class="text-muted small fst-italic" id="mod_msg_sin_estudiantes">Sin estudiantes</span>
+        </div>
+
+        <select name="estudiantes" id="mod_select_real_estudiantes" class="d-none" multiple>
+          {% for est in estudiantes %}
+          <option value="{{ est.legajo }}" data-nombre="{{ est.nombre_completo }}">
+            {{ est.nombre_completo }} ({{ est.legajo }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Observaciones</label>
+        <textarea name="notes" class="form-control" rows="4">{{ proyecto.notes }}</textarea>
+      </div>
+    </div> 
+  </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    <button type="submit" form="formModificarProyecto" class="btn btn-primary">Guardar Cambios</button>
+</div>
+
+{{ docentes_list|json_script:"docentes-data-modificar" }}
+
+<script id="current-students-data" type="application/json">
+[
+  {% for ps in proyecto.students.all %}
+    "{{ ps.estudiante.legajo }}"{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+</script>
+
+
+<script src="../static/js/modificar_proyecto.js" ></script>

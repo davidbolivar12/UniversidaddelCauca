@@ -1,0 +1,28 @@
+# Entorno Virtual (El "node_modules" de Python)
+venv/
+.venv/
+env/
+
+# Bases de datos locales (opcional, si usas SQLite)
+*.sqlite3
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de medios y estáticos recolectados
+media/
+staticfiles/
+
+# Configuraciones de editores
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Tu script de utilidad (opcional, si no quieres que otros lo vean)
+generar_tree.py
+get-pip.py

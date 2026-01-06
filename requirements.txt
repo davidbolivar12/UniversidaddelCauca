@@ -1,0 +1,10 @@
+asgiref==3.11.0
+cffi==2.0.0
+cryptography==46.0.3
+Django==4.2.24
+mysqlclient==2.2.7
+pycparser==2.23
+PyMySQL==1.1.2
+pytz==2023.3.post1
+sqlparse==0.5.3
+tzdata==2023.3

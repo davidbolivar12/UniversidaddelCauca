@@ -1,0 +1,108 @@
+<div class="modal-header" style="background:#000066; color:#fff;">
+  <h5 class="modal-title">Agregar Nuevo Proyecto</h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+  <form id="formAgregarProyecto" method="post" action="{% url 'agregar_proyecto' %}">
+    {% csrf_token %}
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Modalidad</label>
+        <select name="modalidad" id="agg_modalidad" class="form-select" required>
+          <option value="" selected disabled>Seleccione...</option>
+          {% for code, name in modalidad_choices %}
+          <option value="{{ code }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Departamento</label>
+        <select name="department" id="agg_departamento" class="form-select" required>
+          <option value="" selected disabled>Seleccione...</option>
+          {% for code, name in department_choices %}
+          <option value="{{ code }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-bold">Título del Proyecto</label>
+        <input type="text" name="title" class="form-control" placeholder="Ingrese el título..." required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Fecha de Inicio</label>
+        <input type="date" name="start_date" class="form-control" required>
+      </div>
+      
+      <div class="col-md-6">
+         <label class="form-label text-muted">Fecha Expiración</label>
+         <input type="text" class="form-control" placeholder="Calculada autom." disabled>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Sesión</label>
+        <input type="number" name="sesion" class="form-control" placeholder="0">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Resolución</label>
+        <input type="number" name="resolucion" class="form-control" placeholder="0">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Director</label>
+        <select name="director_id" id="agg_director" class="form-select" disabled required>
+          <option value="">-- Seleccione Dpto primero --</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Codirector</label>
+        <select name="codirector_id" id="agg_codirector" class="form-select" disabled>
+          <option value="">-- Seleccione Dpto primero --</option>
+        </select>
+        <div class="form-text small" id="help_codirector">
+           Solo disponible para modalidad Investigación.
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-bold">Estudiantes</label>
+        
+        <div class="position-relative">
+            <input type="text" id="buscador_estudiantes" class="form-control" placeholder="Escriba nombre o legajo para buscar..." autocomplete="off">
+            <div id="lista_resultados" class="list-group position-absolute w-100 shadow" style="z-index: 1000; max-height: 200px; overflow-y: auto; display: none;"></div>
+        </div>
+
+        <div id="contenedor_seleccionados" class="mt-2 d-flex flex-wrap gap-2">
+            <span class="text-muted small fst-italic" id="msg_sin_estudiantes">Sin estudiantes seleccionados</span>
+        </div>
+
+        <select name="estudiantes" id="select_real_estudiantes" class="d-none" multiple required>
+          {% for est in estudiantes %}
+          <option value="{{ est.legajo }}" data-nombre="{{ est.nombre_completo }}">
+            {{ est.nombre_completo }} ({{ est.legajo }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Observaciones</label>
+        <textarea name="notes" class="form-control" rows="2"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+  <button type="submit" form="formAgregarProyecto" class="btn btn-primary">Guardar Proyecto</button>
+</div>
+
+{{ docentes_list|json_script:"docentes-data-agregar" }}
+
+<script src="../static/js/agregar_proyecto.js"> </script>
